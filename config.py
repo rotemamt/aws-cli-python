@@ -1,0 +1,7 @@
+ALLOWED_INSTANCE_TYPES = ["t3.micro", "t2.small"]
+MAX_RUNNING_INSTANCES = 2
+CREATED_BY_TAG_KEY = "CreatedBy"
+CREATED_BY_TAG_VALUE = "platform-cli"
+OWNER = "rotem"
+PROJECT = "AWS-CLI-PYTHON"
+ENVIRONMENT = "dev"
