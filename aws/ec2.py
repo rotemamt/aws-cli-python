@@ -53,6 +53,7 @@ def create_instance(instance_type, os_name):
     if current >= MAX_RUNNING_INSTANCES:
         print(f"Error: {MAX_RUNNING_INSTANCES} are already running, you've hit the limit.")
         return
+    
     ami_id = get_latest_ami(os_name)
     client = boto3.client("ec2")
     response = client.run_instances(
