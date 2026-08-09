@@ -1,15 +1,17 @@
-import boto3
-import os
 import json
+import os
+
+import boto3
+
 from config import (
     CREATED_BY_TAG_KEY,
     CREATED_BY_TAG_VALUE,
+    ENVIRONMENT_TAG_KEY,
+    ENVIRONMENT_TAG_VALUE,
     OWNER_TAG_KEY,
     OWNER_TAG_VALUE,
     PROJECT_TAG_KEY,
     PROJECT_TAG_VALUE,
-    ENVIRONMENT_TAG_KEY,
-    ENVIRONMENT_TAG_VALUE,
 )
 
 

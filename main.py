@@ -1,8 +1,9 @@
 import argparse
 import sys
-from config import ALLOWED_INSTANCE_TYPES
+
 from aws.ec2 import create_instance, list_instances, start_instance, stop_instance
 from aws.s3 import create_bucket, list_buckets, upload_file
+from config import ALLOWED_INSTANCE_TYPES
 
 parser = argparse.ArgumentParser(description="AWS self-service CLI tool")
 parser.add_argument(

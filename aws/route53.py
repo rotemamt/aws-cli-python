@@ -1,14 +1,16 @@
-import boto3
 import time
+
+import boto3
+
 from config import (
     CREATED_BY_TAG_KEY,
     CREATED_BY_TAG_VALUE,
+    ENVIRONMENT_TAG_KEY,
+    ENVIRONMENT_TAG_VALUE,
     OWNER_TAG_KEY,
     OWNER_TAG_VALUE,
     PROJECT_TAG_KEY,
     PROJECT_TAG_VALUE,
-    ENVIRONMENT_TAG_KEY,
-    ENVIRONMENT_TAG_VALUE,
 )
 
 
@@ -68,3 +70,34 @@ def change_record(zone_id, record_name, record_value, action):
         ResourceType="hostedzone", ResourceId=zone_id
     )
     tags = tag_response["ResourceTagSet"]["Tags"]
+
+    has_created_by = False
+    has_owner = False
+
+    for tag in tags:
+        if tag["Key"] == CREATED_BY_TAG_KEY and tag["Value"] == CREATED_BY_TAG_VALUE:
+            has_created_by = True
+        if tag["Key"] == OWNER_TAG_KEY and tag["Value"] == OWNER_TAG_VALUE:
+            has_owner = True
+
+    if not has_created_by or not has_owner:
+        print(f"Error: zone {zone_id} was not created by this CLI.")
+        return
+
+    client.change_resource_record_sets(
+        HostedZoneId=zone_id,
+        ChangeBatch={
+            "Changes": [
+                {
+                    "Action": action,
+                    "ResourceRecordSet": {
+                        "Name": record_name,
+                        "Type": "A",
+                        "TTL": 300,
+                        "ResourceRecords": [{"Value": record_value}],
+                    },
+                }
+            ]
+        },
+    )
+    print(f"{action} {record_name} -> {record_value}")
