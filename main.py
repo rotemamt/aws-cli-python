@@ -29,7 +29,7 @@ if args.resource == "s3" and args.action in ["create", "upload"] and args.name i
     print("Error: --name is required for create and upload")
     sys.exit(1)
 
-if args.action == "s3" and args.action == "upload" and args.file is None:
+if args.resource == "s3" and args.action == "upload" and args.file is None:
     print("Error: --file is required for upload")
     sys.exit(1)
 

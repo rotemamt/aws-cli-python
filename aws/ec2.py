@@ -80,9 +80,14 @@ def create_instance(instance_type, os_name):
 
 def stop_instance(instance_id):
     client = boto3.client("ec2")
-    response = client.describe_instances(InstanceIds=[instance_id])
+    try:
+        response = client.describe_instances(InstanceIds=[instance_id])
+    except client.exceptions.ClientError as e:
+        print(f"Error: {e}")
+        return
+    
     instance = response["Reservations"][0]["Instances"][0]
-    tags = instance["Tags"]
+    tags = instance.get("Tags", [])
 
     has_created_by = False
     has_owner = False
@@ -111,10 +116,15 @@ def stop_instance(instance_id):
 
 def start_instance(instance_id):
     client = boto3.client("ec2")
-    response = client.describe_instances(InstanceIds=[instance_id])
+    try:
+        response = client.describe_instances(InstanceIds=[instance_id])
+    except client.exceptions.ClientError as e:
+        print(f"Error: {e}")
+        return
+    
     instance = response["Reservations"][0]["Instances"][0]
-    tags = instance["Tags"]
-
+    tags = instance.get("Tags", [])
+    
     has_created_by = False
     has_owner = False
 
