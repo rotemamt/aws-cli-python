@@ -101,3 +101,72 @@ def change_record(zone_id, record_name, record_value, action):
         },
     )
     print(f"{action} {record_name} -> {record_value}")
+    
+
+def list_records(zone_id):
+    client = boto3.client("route53")
+    tag_response = client.list_tags_for_resource(
+        ResourceType="hostedzone", ResourceId=zone_id
+    )
+    tags = tag_response["ResourceTagSet"]["Tags"]
+
+    has_created_by = False
+    has_owner = False
+
+    for tag in tags:
+        if tag["Key"] == CREATED_BY_TAG_KEY and tag["Value"] == CREATED_BY_TAG_VALUE:
+            has_created_by = True
+        if tag["Key"] == OWNER_TAG_KEY and tag["Value"] == OWNER_TAG_VALUE:
+            has_owner = True
+
+    if not has_created_by or not has_owner:
+        print(f"Error: zone {zone_id} was not created by this CLI.")
+        return
+    
+    response = client.list_resource_record_sets(HostedZoneId=zone_id)
+    
+    count = 0
+    for record in response["ResourceRecordSets"]:
+        if record["Type"] != "A":
+            continue
+        value = record["ResourceRecords"][0]["Value"]
+        print(record["Name"], record["Type"], value)
+        count += 1
+        
+    if count == 0:
+        print("No records found.")
+        
+    
+def delete_zone(zone_id):
+    client = boto3.client("route53")
+    tag_response = client.list_tags_for_resource(
+        ResourceType="hostedzone", ResourceId=zone_id
+    )
+    tags = tag_response["ResourceTagSet"]["Tags"]
+
+    has_created_by = False
+    has_owner = False
+
+    for tag in tags:
+        if tag["Key"] == CREATED_BY_TAG_KEY and tag["Value"] == CREATED_BY_TAG_VALUE:
+            has_created_by = True
+        if tag["Key"] == OWNER_TAG_KEY and tag["Value"] == OWNER_TAG_VALUE:
+            has_owner = True
+
+    if not has_created_by or not has_owner:
+        print(f"Error: zone {zone_id} was not created by this CLI.")
+        return
+    
+
+    answer = input("Are you sure u want to delete? Type yes to confirm: ")
+    if answer not in ["yes", "Yes", "Y", "y"]:
+        print("Aborted")
+        return
+    
+    try:
+        client.delete_hosted_zone(Id=zone_id)
+    except client.exceptions.ClientError as e:
+        print(f"Error deleting zone: {e}")
+        return
+
+    print(f"{zone_id} was deleted")
