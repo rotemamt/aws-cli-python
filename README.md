@@ -1,4 +1,4 @@
-# platform-cli
+# AWS CLI Platform
 
 A self-service command line tool that lets developers create and manage AWS
 resources on their own, without giving them the AWS console and without waiting for a DevOps engineer to do it for them.
