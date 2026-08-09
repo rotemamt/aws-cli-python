@@ -56,19 +56,39 @@ if args.resource == "s3" and args.action == "upload" and args.file is None:
     print("Error: --file is required for upload")
     sys.exit(1)
 
-if args.resource == "route53" and args.action in ["create", "update", "delete"] and args.record_name and args.zone_id is None:
+if (
+    args.resource == "route53"
+    and args.action in ["create", "update", "delete"]
+    and args.record_name
+    and args.zone_id is None
+):
     print("Error: --zone-id is required for record operations")
     sys.exit(1)
 
-if args.resource == "route53" and args.action in ["create", "update", "delete"] and args.record_name and args.record_value is None:
+if (
+    args.resource == "route53"
+    and args.action in ["create", "update", "delete"]
+    and args.record_name
+    and args.record_value is None
+):
     print("Error: --record-value is required for record operations")
     sys.exit(1)
 
-if args.resource == "route53" and args.action == "create" and args.record_name is None and args.name is None:
+if (
+    args.resource == "route53"
+    and args.action == "create"
+    and args.record_name is None
+    and args.name is None
+):
     print("Error: --name is required to create a zone")
     sys.exit(1)
 
-if args.resource == "route53" and args.action == "delete" and args.record_name is None and args.zone_id is None:
+if (
+    args.resource == "route53"
+    and args.action == "delete"
+    and args.record_name is None
+    and args.zone_id is None
+):
     print("Error: --zone-id is required to delete a zone")
     sys.exit(1)
 
