@@ -32,9 +32,9 @@ parser.add_argument("--id", help="Instance ID")
 parser.add_argument("--name", help="The Bucket name")
 parser.add_argument("--file", help="Path to the file to upload")
 parser.add_argument("--public", action="store_true", help="Make the S3 Bucket public")
-parser.add_argument("--zone-id", help="Route53 hostez zone ID")
-parser.add_argument("--record-name", help="DNS record name, e.g www.example.com")
-parser.add_argument("--record-value", help="DNS record value, e.g an IPv4 address")
+parser.add_argument("--zone-id", help="Route53 hosted zone ID")
+parser.add_argument("--record-name", help="DNS record name, e.g. www.example.com")
+parser.add_argument("--record-value", help="DNS record value, e.g. an IPv4 address")
 
 
 args = parser.parse_args()

@@ -66,9 +66,14 @@ def create_zone(domain_name):
 
 def change_record(zone_id, record_name, record_value, action):
     client = boto3.client("route53")
-    tag_response = client.list_tags_for_resource(
-        ResourceType="hostedzone", ResourceId=zone_id
-    )
+    try:
+        tag_response = client.list_tags_for_resource(
+            ResourceType="hostedzone", ResourceId=zone_id
+        )
+    except client.exceptions.NoSuchHostedZone:
+        print(f"Error: no hosted zone found with ID {zone_id}")
+        return
+
     tags = tag_response["ResourceTagSet"]["Tags"]
 
     has_created_by = False
@@ -105,9 +110,14 @@ def change_record(zone_id, record_name, record_value, action):
 
 def list_records(zone_id):
     client = boto3.client("route53")
-    tag_response = client.list_tags_for_resource(
-        ResourceType="hostedzone", ResourceId=zone_id
-    )
+    try:
+        tag_response = client.list_tags_for_resource(
+            ResourceType="hostedzone", ResourceId=zone_id
+        )
+    except client.exceptions.NoSuchHostedZone:
+        print(f"Error: no hosted zone found with ID {zone_id}")
+        return
+
     tags = tag_response["ResourceTagSet"]["Tags"]
 
     has_created_by = False
@@ -139,9 +149,14 @@ def list_records(zone_id):
 
 def delete_zone(zone_id):
     client = boto3.client("route53")
-    tag_response = client.list_tags_for_resource(
-        ResourceType="hostedzone", ResourceId=zone_id
-    )
+    try:
+        tag_response = client.list_tags_for_resource(
+            ResourceType="hostedzone", ResourceId=zone_id
+        )
+    except client.exceptions.NoSuchHostedZone:
+        print(f"Error: no hosted zone found with ID {zone_id}")
+        return
+
     tags = tag_response["ResourceTagSet"]["Tags"]
 
     has_created_by = False
@@ -157,7 +172,7 @@ def delete_zone(zone_id):
         print(f"Error: zone {zone_id} was not created by this CLI.")
         return
 
-    answer = input("Are you sure u want to delete? Type yes to confirm: ")
+    answer = input("Are you sure you want to delete? Type yes to confirm: ")
     if answer not in ["yes", "Yes", "Y", "y"]:
         print("Aborted")
         return
