@@ -22,7 +22,10 @@ def list_instances():
         Filters=[
             {"Name": f"tag:{CREATED_BY_TAG_KEY}", "Values": [CREATED_BY_TAG_VALUE]},
             {"Name": f"tag:{OWNER_TAG_KEY}", "Values": [OWNER_TAG_VALUE]},
-            {"Name": "instance-state-name", "Values": ["pending", "running", "stopping", "stopped"]}
+            {
+                "Name": "instance-state-name",
+                "Values": ["pending", "running", "stopping", "stopped"],
+            },
         ]
     )
     count = 0
