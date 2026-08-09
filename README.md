@@ -235,6 +235,13 @@ aws-cli-python/
 │   ├── ec2.py                  EC2 logic and guardrails
 │   ├── s3.py                   S3 logic and guardrails
 │   └── route53.py              Route53 logic and guardrails
+├── docs/
+│   └── DEMO.md                 terminal output from a real run
+├── .github/workflows/ci.yml    lint, format and syntax checks
 ├── requirements.txt
-└── .github/workflows/ci.yml
+├── README.md
+└── .gitignore
 ```
+
+See [docs/DEMO.md](docs/DEMO.md) for real terminal output of every command and
+every guardrail.
